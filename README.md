@@ -1,5 +1,7 @@
 # CodeGlow
 
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
 **Make your code glow.**
 
 Paste. Style. Glow. Share.
@@ -101,9 +103,14 @@ codeglow/
     └── codeglow.ts       # Type definitions
 ```
 
+## Contributing
+
+Issues and pull requests are welcome. Please open an issue first to discuss
+larger changes.
+
 ## License
 
-MIT
+This project is open source under the [MIT License](./LICENSE).
 
 ## Built with
 
