@@ -11,7 +11,7 @@ export const GITHUB_REPO_URL = "https://github.com/ANSHSINGH050404/CodeGlow";
  * domain or the final Vercel URL is known.
  */
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "https://codeglow.vercel.app";
+  process.env.NEXT_PUBLIC_SITE_URL || "https://codeglow-kappa.vercel.app";
 
 export const SITE_NAME = "CodeGlow";
 export const SITE_TAGLINE = "Make your code glow";

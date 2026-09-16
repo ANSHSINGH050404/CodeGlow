@@ -90,7 +90,7 @@ NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com  # or https://eu.i.posthog.com
 
 Set the canonical production URL so Open Graph cards, sitemap and
 canonical links point at the right domain (defaults to
-`https://codeglow.vercel.app`):
+`https://codeglow-kappa.vercel.app`):
 
 ```bash
 NEXT_PUBLIC_SITE_URL=https://your-domain.com
