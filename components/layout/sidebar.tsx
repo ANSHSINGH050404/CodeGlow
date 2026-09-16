@@ -26,17 +26,10 @@ import {
 } from "lucide-react";
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { LANGUAGES } from "@/lib/languages";
+import { stripExtension } from "@/lib/filenames";
 import { copyToClipboard } from "@/lib/export";
 import { trackEvent } from "@/lib/analytics";
 import { useToast } from "@/components/ui/toast";
-
-function stripExtension(filename: string) {
-  const dot = filename.lastIndexOf(".");
-  if (dot > 0 && dot < filename.length - 1) {
-    return filename.slice(0, dot);
-  }
-  return filename;
-}
 
 function Section({
   title,

@@ -28,6 +28,7 @@ import {
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { useToast } from "@/components/ui/toast";
 import { trackEvent } from "@/lib/analytics";
+import { getBaseFileName } from "@/lib/filenames";
 
 export function ExportButton({
   getFrameElement,
@@ -47,22 +48,7 @@ export function ExportButton({
     return document.getElementById("code-frame-capture");
   };
 
-  const getBaseFileName = () => {
-    const raw = title?.trim() || `codeglow-${preset}`;
-    // Only strip an extension if there's a dot after the first char
-    // (avoids turning dotfiles like ".gitignore" into "").
-    const lastDot = raw.lastIndexOf(".");
-    if (lastDot > 0) {
-      const after = raw.slice(lastDot + 1);
-      // Avoid stripping if the "extension" contains path separators or is empty
-      if (after && !after.includes("/") && !after.includes("\\")) {
-        return raw.slice(0, lastDot) || raw;
-      }
-    }
-    return raw;
-  };
-
-  const baseFileName = getBaseFileName();
+  const baseFileName = getBaseFileName(title, preset);
 
   const handleExportPng = async (scale: number = exportScale) => {
     const element = resolveElement();
