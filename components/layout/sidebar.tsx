@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { LANGUAGES } from "@/lib/languages";
+import { VIBES } from "@/lib/vibes";
 import { stripExtension } from "@/lib/filenames";
 import { copyToClipboard } from "@/lib/export";
 import { trackEvent } from "@/lib/analytics";
@@ -60,6 +61,7 @@ export function Sidebar() {
     setCode,
     setLanguage,
     setTitle,
+    loadConfig,
   } = useCodeGlowStore();
 
   const [copied, setCopied] = useState(false);
@@ -193,6 +195,37 @@ export function Sidebar() {
         <p className="text-[11px] text-zinc-400 leading-relaxed">
           Tip: click the canvas and type — or drop a code file onto it.
         </p>
+      </Section>
+
+      {/* Vibes */}
+      <Section title="Vibes">
+        <div className="grid grid-cols-2 gap-2">
+          {VIBES.map((vibe) => (
+            <button
+              key={vibe.id}
+              type="button"
+              onClick={() => {
+                loadConfig(vibe.config);
+                trackEvent("template_applied", { vibe: vibe.id });
+              }}
+              title={vibe.tagline}
+              className="group flex flex-col gap-1.5 p-2 rounded-lg border border-zinc-200 dark:border-zinc-800 hover:border-purple-500 dark:hover:border-purple-500 transition-colors text-left"
+            >
+              <span
+                className="w-full h-10 rounded-md border border-black/10 dark:border-white/10"
+                style={{ background: vibe.swatch }}
+              />
+              <span>
+                <span className="block text-xs font-medium text-zinc-900 dark:text-zinc-100">
+                  {vibe.name}
+                </span>
+                <span className="block text-[10px] text-zinc-400">
+                  {vibe.tagline}
+                </span>
+              </span>
+            </button>
+          ))}
+        </div>
       </Section>
 
       {/* Canvas size */}

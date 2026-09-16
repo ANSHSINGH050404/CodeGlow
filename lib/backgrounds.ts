@@ -86,6 +86,41 @@ export const BACKGROUNDS: readonly BackgroundOption[] = [
     value: "linear-gradient(135deg, #030712 0%, #111827 50%, #1f2937 100%)",
   },
   {
+    id: "ultraviolet",
+    name: "Ultraviolet",
+    type: "gradient",
+    category: "gradient",
+    value: "linear-gradient(135deg, #0f0520 0%, #5b21b6 55%, #d946ef 100%)",
+  },
+  {
+    id: "matcha",
+    name: "Matcha",
+    type: "gradient",
+    category: "gradient",
+    value: "linear-gradient(135deg, #052e16 0%, #166534 55%, #4d7c0f 100%)",
+  },
+  {
+    id: "bubblegum",
+    name: "Bubblegum",
+    type: "gradient",
+    category: "gradient",
+    value: "linear-gradient(135deg, #831843 0%, #db2777 50%, #f9a8d4 100%)",
+  },
+  {
+    id: "ember",
+    name: "Ember",
+    type: "gradient",
+    category: "gradient",
+    value: "linear-gradient(135deg, #180202 0%, #7c2d12 55%, #fbbf24 100%)",
+  },
+  {
+    id: "nordic-frost",
+    name: "Nordic Frost",
+    type: "gradient",
+    category: "gradient",
+    value: "linear-gradient(135deg, #082f49 0%, #475569 60%, #cbd5e1 100%)",
+  },
+  {
     id: "supernova",
     name: "Supernova",
     type: "gradient",
@@ -135,6 +170,13 @@ export const BACKGROUNDS: readonly BackgroundOption[] = [
     type: "solid",
     category: "solid",
     value: "#1e3a8a",
+  },
+  {
+    id: "warm-paper",
+    name: "Warm Paper",
+    type: "solid",
+    category: "solid",
+    value: "#f4f1ea",
   },
 ] as const;
 
