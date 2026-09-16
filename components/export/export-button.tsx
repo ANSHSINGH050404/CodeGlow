@@ -15,6 +15,9 @@ import {
   Copy,
   ChevronDown,
   Share2,
+  Send,
+  Layers,
+  FileText,
   FileCode2,
   Image as ImageIcon,
   Loader2,
@@ -39,7 +42,7 @@ export function ExportButton({
 } = {}) {
   const [isExporting, setIsExporting] = useState(false);
   const [exportType, setExportType] = useState<string | null>(null);
-  const { preset, title, exportScale, setExportScale } = useCodeGlowStore();
+  const { preset, title, exportScale, setExportScale, setPreset } = useCodeGlowStore();
   const { showToast } = useToast();
 
   const resolveElement = () => {
@@ -190,6 +193,90 @@ export function ExportButton({
     }
   };
 
+  const handlePostToX = async () => {
+    const element = resolveElement();
+    if (!element) return;
+
+    // Open the compose window synchronously so popup blockers allow it,
+    // then export the image for the user to attach.
+    const text = `${title?.trim() || "My code"} — made with CodeGlow ✨ #CodeGlow`;
+    window.open(
+      `https://x.com/intent/post?text=${encodeURIComponent(text)}`,
+      "_blank",
+      "noopener"
+    );
+
+    setIsExporting(true);
+    setExportType(`png-${exportScale}`);
+    try {
+      await exportToPng(element, `${baseFileName}-${exportScale}x.png`, exportScale);
+      trackEvent("post_to_x", { scale: exportScale });
+      showToast("Image downloaded — attach it to your post! 🐦", "glow");
+    } catch (error) {
+      console.error("Export failed:", error);
+      showToast("Failed to export image", "error");
+    } finally {
+      setIsExporting(false);
+      setExportType(null);
+    }
+  };
+
+  const handleExportPack = async () => {
+    const element = resolveElement();
+    if (!element) return;
+
+    const pack: Array<{ id: string; label: string }> = [
+      { id: "twitter", label: "X / Twitter" },
+      { id: "square", label: "Square" },
+      { id: "story", label: "Story" },
+    ];
+    const previousPreset = preset;
+
+    setIsExporting(true);
+    setExportType("pack");
+    try {
+      for (const item of pack) {
+        setPreset(item.id);
+        // Let React flush the layout + paint before capturing.
+        await new Promise((r) => setTimeout(r, 450));
+        const el = resolveElement();
+        if (!el) throw new Error("Canvas element lost during pack export");
+        await exportToPng(el, `${baseFileName}-${item.id}-${exportScale}x.png`, exportScale);
+      }
+      trackEvent("export_pack", { count: pack.length, scale: exportScale });
+      showToast("Exported X + Square + Story pack! 🖼️", "glow");
+    } catch (error) {
+      console.error("Pack export failed:", error);
+      showToast("Failed to export pack", "error");
+    } finally {
+      setPreset(previousPreset);
+      setIsExporting(false);
+      setExportType(null);
+    }
+  };
+
+  const handleCopyReadme = async () => {
+    const element = resolveElement();
+    if (!element) return;
+
+    setIsExporting(true);
+    setExportType("readme");
+    try {
+      const fileName = `${baseFileName}-${exportScale}x.png`;
+      await exportToPng(element, fileName, exportScale);
+      const alt = title?.trim() || "code snippet";
+      await navigator.clipboard.writeText(`![${alt}](${fileName})`);
+      trackEvent("readme_copied");
+      showToast("PNG downloaded + README markdown copied! 📝", "success");
+    } catch (error) {
+      console.error("README export failed:", error);
+      showToast("Failed to export README snippet", "error");
+    } finally {
+      setIsExporting(false);
+      setExportType(null);
+    }
+  };
+
   return (
     <div className="flex items-center gap-2">
       {/* Primary Export Button Group */}
@@ -279,6 +366,20 @@ export function ExportButton({
               <ImageIcon className="w-4 h-4 text-emerald-400" />
               <span>JPEG Image (Compressed)</span>
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={handleExportPack}
+              className="gap-2 cursor-pointer"
+            >
+              <Layers className="w-4 h-4 text-amber-400" />
+              <span>Social Pack (X + Square + Story)</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={handleCopyReadme}
+              className="gap-2 cursor-pointer"
+            >
+              <FileText className="w-4 h-4 text-zinc-400" />
+              <span>README Markdown Snippet</span>
+            </DropdownMenuItem>
 
             <DropdownMenuSeparator />
 
@@ -291,6 +392,13 @@ export function ExportButton({
             >
               <Share2 className="w-4 h-4" />
               <span>Copy Shareable Link</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={handlePostToX}
+              className="gap-2 cursor-pointer font-medium text-sky-500 dark:text-sky-400"
+            >
+              <Send className="w-4 h-4" />
+              <span>Post to X</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
