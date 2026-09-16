@@ -5,6 +5,18 @@ import { Navbar } from "@/components/layout/navbar";
 import { Workspace } from "@/components/layout/workspace";
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { decodeSnippetFromHash } from "@/lib/share";
+import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
+
+const SOFTWARE_SCHEMA = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: SITE_NAME,
+  url: SITE_URL,
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "Web",
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  description: SITE_DESCRIPTION,
+};
 
 export default function Home() {
   const { initialize, loadConfig } = useCodeGlowStore();
@@ -56,6 +68,13 @@ export default function Home() {
 
   return (
     <div className="flex flex-col h-screen bg-zinc-50 dark:bg-black overflow-hidden select-none">
+      <h1 className="sr-only">
+        CodeGlow — create beautiful code images for social media
+      </h1>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(SOFTWARE_SCHEMA) }}
+      />
       <Navbar />
       <Workspace />
     </div>

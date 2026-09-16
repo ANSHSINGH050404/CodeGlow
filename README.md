@@ -67,6 +67,16 @@ NEXT_PUBLIC_POSTHOG_KEY=phc_...
 NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com  # or https://eu.i.posthog.com
 ```
 
+## SEO & Deployment
+
+Set the canonical production URL so Open Graph cards, sitemap and
+canonical links point at the right domain (defaults to
+`https://codeglow.vercel.app`):
+
+```bash
+NEXT_PUBLIC_SITE_URL=https://your-domain.com
+```
+
 ## Usage
 
 1. **Paste Code**: Type directly on the canvas, paste, or drop a code file anywhere on it
