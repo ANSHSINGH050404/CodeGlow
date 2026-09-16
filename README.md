@@ -1,36 +1,100 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CodeGlow
+
+**Make your code glow.**
+
+Paste. Style. Glow. Share.
+
+CodeGlow is a modern web app that lets developers paste or write code, customize its visual appearance, preview it live, and export it as a beautiful high-resolution image for X/Twitter, LinkedIn, GitHub, blogs, and documentation.
+
+## Features
+
+- **Canvas Editing**: Edit code directly on the canvas with live Shiki syntax highlighting
+- **Customization**: 
+  - 8 syntax themes (GitHub Dark/Light, Dracula, One Dark, Nord, Monokai, Tokyo Night, Vercel Dark)
+  - 5 monospace fonts (Geist Mono, JetBrains Mono, Fira Code, IBM Plex Mono, Source Code Pro)
+  - Background options (solid, gradient, transparent)
+  - Glow effects with customizable intensity and colors
+  - Frame styles (macOS, Minimal, None)
+  - Adjustable padding, border radius, shadows, line numbers
+- **Social Media Presets**: Pre-configured dimensions for X/Twitter, LinkedIn, Square, Story, GitHub, and Blog
+- **Export**: High-quality PNG export at 2x resolution
+- **Copy to Clipboard**: Direct clipboard support for quick sharing
+- **Local Storage**: Automatic persistence of your work
+- **Keyboard Shortcuts**: 
+  - `Ctrl/Cmd + Enter`: Export PNG
+  - `Ctrl/Cmd + Shift + C`: Copy image
+- **Responsive Design**: Works on desktop, tablet, and mobile
+
+## Tech Stack
+
+- **Next.js 16** with React 19
+- **TypeScript** for type safety
+- **Tailwind CSS** for styling
+- **Shiki** for syntax highlighting and canvas editing
+- **Zustand** for state management
+- **html-to-image** for image export
+- **Radix UI** for accessible components
+- **Lucide React** for icons
 
 ## Getting Started
 
-First, run the development server:
-
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Install dependencies
+bun install
+
+# Run development server
+bun run dev
+
+# Build for production
+bun run build
+
+# Start production server
+bun run start
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Usage
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. **Paste Code**: Type directly on the canvas, paste, or drop a code file anywhere on it
+2. **Customize**: Use the controls below to adjust theme, font, background, glow, and frame settings
+3. **Preview**: See your changes in real-time on the canvas
+4. **Export**: Click "Export PNG" to download or "Copy Image" to copy to clipboard
+5. **Share**: Use your beautiful code image on social media, blogs, or documentation
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Project Structure
 
-## Learn More
+```
+codeglow/
+├── app/                    # Next.js app directory
+│   ├── layout.tsx         # Root layout with fonts
+│   ├── page.tsx           # Main page with keyboard shortcuts
+│   └── globals.css        # Global styles
+├── components/            # React components
+│   ├── layout/           # Navbar, unified control bar, and workspace
+│   ├── preview/          # Editable code canvas with Shiki highlighting
+│   ├── controls/         # Customization controls
+│   ├── export/           # Export functionality
+│   ├── layout/           # Navbar and workspace
+│   └── ui/               # Reusable UI components
+├── lib/                  # Utility functions
+│   ├── utils.ts          # General utilities
+│   ├── themes.ts         # Theme definitions
+│   ├── fonts.ts          # Font definitions
+│   ├── presets.ts        # Social media presets
+│   ├── export.ts         # Image export functions
+│   └── storage.ts        # Local storage utilities
+├── store/                # State management
+│   └── codeglow-store.ts # Zustand store
+└── types/                # TypeScript types
+    └── codeglow.ts       # Type definitions
+```
 
-To learn more about Next.js, take a look at the following resources:
+## License
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+MIT
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Built with
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [Next.js](https://nextjs.org/)
+- [Shiki](https://shiki.style/)
+- [Tailwind CSS](https://tailwindcss.com/)
+- [Radix UI](https://www.radix-ui.com/)
