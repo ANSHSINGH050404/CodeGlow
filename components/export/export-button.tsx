@@ -14,6 +14,7 @@ import {
   Download,
   Copy,
   ChevronDown,
+  Share2,
   FileCode2,
   Image as ImageIcon,
   Loader2,
@@ -28,6 +29,7 @@ import {
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { useToast } from "@/components/ui/toast";
 import { trackEvent } from "@/lib/analytics";
+import { encodeSnippetToHash } from "@/lib/share";
 import { getBaseFileName } from "@/lib/filenames";
 
 export function ExportButton({
@@ -145,6 +147,49 @@ export function ExportButton({
     }
   };
 
+  const collectShareConfig = () => {
+    const s = useCodeGlowStore.getState();
+    return {
+      code: s.code,
+      language: s.language,
+      title: s.title,
+      showTitle: s.showTitle,
+      theme: s.theme,
+      font: s.font,
+      fontSize: s.fontSize,
+      lineHeight: s.lineHeight,
+      padding: s.padding,
+      borderRadius: s.borderRadius,
+      shadow: s.shadow,
+      shadowStyle: s.shadowStyle,
+      lineNumbers: s.lineNumbers,
+      startLineNumber: s.startLineNumber,
+      highlightedLines: s.highlightedLines,
+      windowStyle: s.windowStyle,
+      showWatermark: s.showWatermark,
+      watermarkText: s.watermarkText,
+      glow: s.glow,
+      background: s.background,
+      preset: s.preset,
+      cardWidth: s.cardWidth,
+      exportScale: s.exportScale,
+    };
+  };
+
+  const handleCopyLink = async () => {
+    try {
+      const hash = encodeSnippetToHash(collectShareConfig());
+      if (!hash) throw new Error("Encoding failed");
+      const url = `${window.location.origin}${window.location.pathname}#${hash}`;
+      await navigator.clipboard.writeText(url);
+      trackEvent("share_link_copied");
+      showToast("Shareable link copied! Anyone opening it sees your snippet 🔗", "glow");
+    } catch (e) {
+      console.error("Failed to generate share link:", e);
+      showToast("Failed to generate share link", "error");
+    }
+  };
+
   return (
     <div className="flex items-center gap-2">
       {/* Primary Export Button Group */}
@@ -233,6 +278,19 @@ export function ExportButton({
             >
               <ImageIcon className="w-4 h-4 text-emerald-400" />
               <span>JPEG Image (Compressed)</span>
+            </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
+            <DropdownMenuLabel className="text-[11px] font-semibold text-zinc-400 uppercase tracking-wider px-2 py-1">
+              Share
+            </DropdownMenuLabel>
+            <DropdownMenuItem
+              onClick={handleCopyLink}
+              className="gap-2 cursor-pointer font-medium text-purple-600 dark:text-purple-400"
+            >
+              <Share2 className="w-4 h-4" />
+              <span>Copy Shareable Link</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -82,7 +82,7 @@ export const DEFAULT_CONFIG: CodeGlowConfig = {
   startLineNumber: 1,
   highlightedLines: [],
   windowStyle: "macos",
-  showWatermark: false,
+  showWatermark: true,
   watermarkText: "CodeGlow",
   glow: {
     enabled: true,
