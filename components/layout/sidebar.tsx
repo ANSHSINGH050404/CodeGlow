@@ -26,6 +26,8 @@ import {
 } from "lucide-react";
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { LANGUAGES } from "@/lib/languages";
+import { copyToClipboard } from "@/lib/export";
+import { useToast } from "@/components/ui/toast";
 
 function stripExtension(filename: string) {
   const dot = filename.lastIndexOf(".");
@@ -54,19 +56,20 @@ function Section({
 
 export function Sidebar() {
   const {
-    code,
     language,
     title,
     fontSize,
     setFontSize,
     lineHeight,
     setLineHeight,
+    exportScale,
     setCode,
     setLanguage,
     setTitle,
   } = useCodeGlowStore();
 
   const [copied, setCopied] = useState(false);
+  const { showToast } = useToast();
 
   const handleLanguageChange = (langId: string) => {
     setLanguage(langId);
@@ -85,13 +88,16 @@ export function Sidebar() {
     }
   };
 
-  const handleCopyCode = async () => {
+  const handleCopyCanvas = async () => {
+    const element = document.getElementById("code-frame-capture");
+    if (!element) return;
     try {
-      await navigator.clipboard.writeText(code);
+      await copyToClipboard(element, exportScale);
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch (e) {
-      console.error("Failed to copy raw code:", e);
+      console.error("Failed to copy canvas image:", e);
+      showToast("Failed to copy image to clipboard", "error");
     }
   };
 
@@ -162,8 +168,9 @@ export function Sidebar() {
           <Button
             variant="outline"
             size="sm"
-            onClick={handleCopyCode}
+            onClick={handleCopyCanvas}
             className="h-8 text-xs gap-1.5 border-zinc-200 dark:border-zinc-800"
+            title="Copy canvas image to clipboard"
           >
             {copied ? (
               <>
@@ -173,7 +180,7 @@ export function Sidebar() {
             ) : (
               <>
                 <Copy className="w-3.5 h-3.5" />
-                <span>Copy code</span>
+                <span>Copy image</span>
               </>
             )}
           </Button>
