@@ -183,8 +183,63 @@ async function capture<T>(
   run: (options: ExportOptions) => Promise<T>
 ): Promise<T> {
   return withCrossOriginStylesheetsDetached(async () => {
-    const options = await getExportOptions(element, scale);
-    return run(options);
+    return withExportHygiene(element, async () => {
+      const options = await getExportOptions(element, scale);
+      return run(options);
+    });
+  });
+}
+
+/**
+ * Hides things that look fine on screen but ruin exports:
+ * - Browser scrollbars (the editor scrolls long lines; the scrollbar
+ *   track + thumb would otherwise be baked into the image and can
+ *   cover the last line of code).
+ * - The transparent editing textarea overlay (invisible text, but it
+ *   can still affect rendering/selection in the capture).
+ *
+ * Everything is restored after the capture finishes.
+ */
+function withExportHygiene<T>(
+  element: HTMLElement,
+  run: () => Promise<T>
+): Promise<T> {
+  if (typeof document === "undefined") {
+    return run();
+  }
+
+  // Kill scrollbars inside the capture tree.
+  const style = document.createElement("style");
+  style.setAttribute("data-codeglow-export", "true");
+  style.textContent = `
+    #code-frame-capture, #code-frame-capture * {
+      scrollbar-width: none !important;
+      -ms-overflow-style: none !important;
+    }
+    #code-frame-capture *::-webkit-scrollbar {
+      display: none !important;
+      width: 0 !important;
+      height: 0 !important;
+    }
+  `;
+  document.head.appendChild(style);
+
+  // Hide the transparent code-editing overlay for the capture.
+  const textareas = Array.from(element.querySelectorAll("textarea"));
+  const prevVisibility = textareas.map((t) => t.style.visibility);
+  textareas.forEach((t) => {
+    t.style.visibility = "hidden";
+  });
+
+  // Force a synchronous reflow so the scrollbar removal + visibility
+  // changes are applied before html-to-image clones the tree.
+  void element.offsetHeight;
+
+  return run().finally(() => {
+    textareas.forEach((t, i) => {
+      t.style.visibility = prevVisibility[i];
+    });
+    style.remove();
   });
 }
 
