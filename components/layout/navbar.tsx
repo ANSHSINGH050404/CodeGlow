@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { ExportButton } from "@/components/export/export-button";
 import { RotateCcw, Sparkles } from "lucide-react";
+import Link from "next/link";
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { GITHUB_REPO_URL } from "@/lib/site";
 
@@ -26,8 +27,14 @@ export function Navbar() {
         </div>
       </div>
 
-      {/* Right Actions: Reset, Export */}
+      {/* Right Actions: Gallery, Reset, Export */}
       <div className="flex items-center gap-2">
+        <Link
+          href="/gallery"
+          className="text-xs font-medium text-zinc-600 dark:text-zinc-400 hover:text-purple-500 dark:hover:text-purple-400 px-2.5 h-9 hidden sm:inline-flex items-center transition-colors"
+        >
+          Gallery
+        </Link>
         <Button
           variant="ghost"
           size="sm"
