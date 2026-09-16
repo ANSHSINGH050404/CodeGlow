@@ -3,4 +3,4 @@
  * (e.g. https://github.com/<user>/codeglow) — the navbar GitHub icon
  * stays hidden until this is set.
  */
-export const GITHUB_REPO_URL = "";
+export const GITHUB_REPO_URL = "https://github.com/ANSHSINGH050404/CodeGlow";
