@@ -3,6 +3,7 @@ import { Geist, Geist_Mono, JetBrains_Mono, Fira_Code, IBM_Plex_Mono, Source_Cod
 import "./globals.css";
 import { ToastProvider } from "@/components/ui/toast";
 import { AnalyticsProvider } from "@/components/analytics/posthog-provider";
+import { Analytics } from "@vercel/analytics/react";
 import { SITE_URL, SITE_NAME, SITE_DESCRIPTION } from "@/lib/site";
 
 const geistSans = Geist({
@@ -84,7 +85,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${firaCode.variable} ${ibmPlexMono.variable} ${sourceCodePro.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col"><ToastProvider><AnalyticsProvider>{children}</AnalyticsProvider></ToastProvider></body>
+      <body className="min-h-full flex flex-col"><ToastProvider><AnalyticsProvider>{children}</AnalyticsProvider></ToastProvider><Analytics /></body>
     </html>
   );
 }
