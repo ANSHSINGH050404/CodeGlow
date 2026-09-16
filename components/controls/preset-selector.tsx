@@ -9,12 +9,18 @@ import {
 } from "@/components/ui/select";
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { PRESETS } from "@/lib/presets";
+import { trackEvent } from "@/lib/analytics";
 
 export function PresetSelector() {
   const { preset, setPreset } = useCodeGlowStore();
 
+  const handlePresetChange = (presetId: string) => {
+    setPreset(presetId);
+    trackEvent("preset_changed", { preset: presetId });
+  };
+
   return (
-    <Select value={preset} onValueChange={setPreset}>
+    <Select value={preset} onValueChange={handlePresetChange}>
       <SelectTrigger
         aria-label="Canvas size preset"
         title="Canvas size preset"

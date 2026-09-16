@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, JetBrains_Mono, Fira_Code, IBM_Plex_Mono, Source_Code_Pro } from "next/font/google";
 import "./globals.css";
 import { ToastProvider } from "@/components/ui/toast";
+import { AnalyticsProvider } from "@/components/analytics/posthog-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -45,7 +46,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} ${jetbrainsMono.variable} ${firaCode.variable} ${ibmPlexMono.variable} ${sourceCodePro.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col"><ToastProvider>{children}</ToastProvider></body>
+      <body className="min-h-full flex flex-col"><ToastProvider><AnalyticsProvider>{children}</AnalyticsProvider></ToastProvider></body>
     </html>
   );
 }

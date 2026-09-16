@@ -27,6 +27,7 @@ import {
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { LANGUAGES } from "@/lib/languages";
 import { copyToClipboard } from "@/lib/export";
+import { trackEvent } from "@/lib/analytics";
 import { useToast } from "@/components/ui/toast";
 
 function stripExtension(filename: string) {
@@ -85,6 +86,7 @@ export function Sidebar() {
       setCode(langObj.sample);
       setLanguage(langObj.id);
       setTitle(`example.${langObj.extension}`);
+      trackEvent("sample_loaded", { language: langObj.id });
     }
   };
 
@@ -93,6 +95,7 @@ export function Sidebar() {
     if (!element) return;
     try {
       await copyToClipboard(element, exportScale);
+      trackEvent("copy_image", { scale: exportScale, source: "sidebar" });
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch (e) {

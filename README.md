@@ -52,6 +52,19 @@ bun run build
 bun run start
 ```
 
+## Analytics
+
+Product analytics via [PostHog](https://posthog.com/): pageviews plus
+`export_png`, `export_svg`, `export_jpeg`, `copy_svg`, `copy_image`,
+`sample_loaded` and `preset_changed` events. Optional — without
+`NEXT_PUBLIC_POSTHOG_KEY` all tracking calls are no-ops. To enable,
+create `.env.local`:
+
+```bash
+NEXT_PUBLIC_POSTHOG_KEY=phc_...
+NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com  # or https://eu.i.posthog.com
+```
+
 ## Usage
 
 1. **Paste Code**: Type directly on the canvas, paste, or drop a code file anywhere on it

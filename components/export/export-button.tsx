@@ -27,6 +27,7 @@ import {
 } from "@/lib/export";
 import { useCodeGlowStore } from "@/store/codeglow-store";
 import { useToast } from "@/components/ui/toast";
+import { trackEvent } from "@/lib/analytics";
 
 export function ExportButton({
   getFrameElement,
@@ -71,6 +72,7 @@ export function ExportButton({
     setExportType(`png-${scale}`);
     try {
       await exportToPng(element, `${baseFileName}-${scale}x.png`, scale);
+      trackEvent("export_png", { scale });
       showToast(`Exported ${scale}x PNG successfully! ✨`, "glow");
     } catch (error) {
       console.error("Export failed:", error);
@@ -89,6 +91,7 @@ export function ExportButton({
     setExportType("svg");
     try {
       await exportToSvg(element, `${baseFileName}.svg`);
+      trackEvent("export_svg");
       showToast("Exported vector SVG successfully! 🎨", "success");
     } catch (error) {
       console.error("SVG export failed:", error);
@@ -107,6 +110,7 @@ export function ExportButton({
     setExportType("jpeg");
     try {
       await exportToJpeg(element, `${baseFileName}.jpg`, exportScale);
+      trackEvent("export_jpeg", { scale: exportScale });
       showToast("Exported JPEG successfully! 🖼️", "success");
     } catch (error) {
       console.error("JPEG export failed:", error);
@@ -125,6 +129,7 @@ export function ExportButton({
     setExportType("copy-png");
     try {
       await copyToClipboard(element, scale);
+      trackEvent("copy_image", { scale, source: "navbar" });
       showToast("Image copied to clipboard! 📋", "glow");
     } catch (error) {
       console.error("Copy failed:", error);
@@ -143,6 +148,7 @@ export function ExportButton({
     setExportType("copy-svg");
     try {
       await copySvgToClipboard(element);
+      trackEvent("copy_svg");
       showToast("SVG code copied to clipboard! 📋", "success");
     } catch (error) {
       console.error("SVG copy failed:", error);
